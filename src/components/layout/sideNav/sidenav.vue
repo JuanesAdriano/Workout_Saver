@@ -28,35 +28,42 @@
 </template>
 <script>
   export default {
-    computed:{
-      drawer(){
+    computed: {
+      drawer() {
         return this.drawerOn
       }
     },
-    data () {
+    data() {
       return {
         clipped: true,
 //        drawer: this.drawerOn,
-        items: [{
-          icon: 'bubble_chart',
-          title: 'Inspire',
-          key:'HelloWorld',
-          to: '/'
-        },
+        items: [
           {
-            icon: 'person',
+            icon: 'bubble_chart',
+            title: 'Inspire',
+            key: 'HelloWorld',
+            to: '/'
+          },
+          {
+            icon: 'directions_run',
             title: 'Cadastro Exercício',
-            key:'cadastro-exercicio',
-            to:'/exercicio/cad'
+            key: 'cadastro-exercicio',
+            to: '/exercicio/cad'
+          },
+          {
+            icon: 'directions_run',
+            title: 'Listagem Exercícios',
+            key: 'listagem-exercicio',
+            to: '/exercicio/list'
           }
         ],
         miniVariant: false,
       }
     },
-    props:{
-      drawerOn:{
+    props: {
+      drawerOn: {
         type: Boolean,
       }
-  }
+    }
   }
 </script>

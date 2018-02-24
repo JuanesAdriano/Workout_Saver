@@ -6,11 +6,15 @@
     <v-layout row>
       <v-flex sm9 offset-sm1>
         <v-text-field v-model="nome" placeholder="Nome do exercício"></v-text-field>
+
       </v-flex>
     </v-layout>
     <v-layout row>
       <v-flex sm4  offset-sm1>
         <v-select :items="quadrantes" v-model="quadranteSelecionado" label="Quadrante"></v-select>
+      </v-flex>
+      <v-flex sm4 offset-sm1>
+        <v-text-field v-model="codigoExercicio" placeholder="Código do Exercício" ></v-text-field>
       </v-flex>
     </v-layout>
     <v-flex sm3 offset-sm1>
@@ -24,6 +28,7 @@
       return{
         nome:'',
         quadranteSelecionado:'',
+        codigoExercicio:'',
         quadrantes:[
           {text:'Peitoral'},{text: 'Abdomem'},{text: 'Coxas'}, {text:'Panturrilhas'},{text: 'Biceps'}, {text:'Triceps'}, {text:'Ombros'}, {text:'Costas'},{text: 'Trapézio'}, {text:'Lombar'}]
       }
