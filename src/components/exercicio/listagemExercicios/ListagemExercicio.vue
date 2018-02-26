@@ -21,7 +21,23 @@
         <v-card-title>
           <h3>Editar Exercício</h3>
           <v-spacer></v-spacer>
-          <v-btn @click="deletarExercicio(editId)">Apagar</v-btn>
+          <v-dialog v-model="confirmDialogDelete" width="360px">
+            <v-btn slot="activator" @click="confirmDialogDelete = true">Apagar</v-btn>
+            <v-card>
+              <v-card-title>Tem certeza?</v-card-title>
+
+              <v-card-text>
+                <v-layout row>
+                  <v-flex xs5>
+                    <v-btn block @click="confirmDialogDelete = false">Cancelar</v-btn>
+                  </v-flex>
+                  <v-flex xs5 offset-xs1>
+                    <v-btn class="success" block @click="deletarExercicio(editId)">Sim</v-btn>
+                  </v-flex>
+                </v-layout>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -35,7 +51,7 @@
                 <v-text-field disabled v-if="!alteraQuadrante" placeholder="Quadrante"
                               v-model="editQuadrante"></v-text-field>
                 <v-select v-else :items="quadrantes" v-model="editQuadrante" label="Quadrante"
-                          @change="consoleSelection" item-value="text"></v-select>
+                         item-value="text"></v-select>
               </v-flex>
               <v-flex xs2>
                 <v-btn icon @click="alteraQuadrante = !alteraQuadrante">
@@ -46,10 +62,10 @@
             </v-layout>
             <v-layout row>
               <v-flex xs5>
-                <v-btn class="error" block>Voltar</v-btn>
+                <v-btn class="error" block @click="fecharDialogItem()">Voltar</v-btn>
               </v-flex>
               <v-flex xs5 offset-xs1>
-                <v-btn class="success" block>Salvar</v-btn>
+                <v-btn class="success" block @click="editarExercicio(editId)">Salvar</v-btn>
               </v-flex>
             </v-layout>
           </v-container>
@@ -62,15 +78,14 @@
 <script>
   //importando a base iniciada do firebase
   import db from '../../firebaseFiles/firebaseInit'
-  import VCardTitle from "vuetify/src/components/VCard/VCardTitle";
 
   export default {
-    components: {VCardTitle},
+
     data() {
       return {
         exercicios: [],
         dialogMostraItem: false,
-
+        confirmDialogDelete: false,
         editNome: '',
         editQuadrante: '',
         editId: '',
@@ -87,6 +102,7 @@
         this.editQuadrante = exercicio.quadrante;
         this.editId = exercicio.id;
         this.dialogMostraItem = true;
+
       },
       consoleSelection() {
         console.log(this.editQuadrante)
@@ -95,6 +111,7 @@
 
       //Métodos do Firebase
       listarExercicios() {
+        this.exercicios = [];
         db.collection('exercicios').get()
           .then(querySnapshot => {
             querySnapshot.forEach(doc => {
@@ -102,20 +119,42 @@
                 'id': doc.id,
                 'nome': doc.data().nome,
                 'quadrante': doc.data().quadrante
-              }
+              };
               this.exercicios.push(data)
             })
           })
       },
       deletarExercicio(id) {
 
-        db.collection('exercicios').where('nome', '==', this.editNome).get()
-          .then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-              doc.ref.delete();
-//              console.log(doc)
-            })
-          })
+        db.collection('exercicios').doc(id).get()
+          .then(doc => {
+            doc.ref.delete();
+//            console.log(doc)
+          });
+
+        this.confirmDialogDelete = false;
+
+        setTimeout(
+          this.fecharDialogItem(), 1000);
+
+      },
+      editarExercicio(id) {
+        db.collection('exercicios').doc(id)
+          .update({
+            "nome": this.editNome,
+            "quadrante": this.editQuadrante
+          }).then(function () {
+          console.log("Exercício Editado com Sucesso");
+//          this.alteraQuadrante = false;
+
+        }).then(this.listarExercicios());
+
+      this.alteraQuadrante = false
+      },
+      fecharDialogItem() {
+        this.dialogMostraItem = false;
+        this.listarExercicios();
+
       }
     },
     created() {
