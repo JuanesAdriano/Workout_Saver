@@ -55,6 +55,12 @@
             title: 'Listagem Exercícios',
             key: 'listagem-exercicio',
             to: '/exercicio/list'
+          },
+          {
+            icon: 'directions_run',
+            title: 'Cadastro Set',
+            key: 'cadastro-set',
+            to: '/set/cad'
           }
         ],
         miniVariant: false,

@@ -104,10 +104,6 @@
         this.dialogMostraItem = true;
 
       },
-      consoleSelection() {
-        console.log(this.editQuadrante)
-      },
-
 
       //Métodos do Firebase
       listarExercicios() {
@@ -136,6 +132,9 @@
 
         setTimeout(
           this.fecharDialogItem(), 1000);
+
+      },
+      onHoverLinhaConsulta(){
 
       },
       editarExercicio(id) {

@@ -20,6 +20,11 @@ export default new Router({
       path: '/exercicio/list',
       name: 'listagem-exercicio',
       component: require( '@/components/exercicio/listagemExercicios/ListagemExercicio.vue').default
+    },
+    {
+      path: '/set/cad',
+      name: 'cadastro-set',
+      component: require( '@/components/set/CadastroSet/FormCadastroSet.vue').default
     }
   ]
 })
